@@ -1,9 +1,9 @@
 import csv
 import json
-import numpy as np
 import os
 import pandas as pd
 import pickle
+import numpy as np
 
 def get_paths():
     paths = json.loads(open("SETTINGS.json").read())
@@ -39,11 +39,14 @@ def load_model():
 
 def write_submission(predictions):
     prediction_path = get_paths()["prediction_path"]
-    """
-    writer = csv.writer(open(prediction_path, "wb"), lineterminator="\n")
+    
+    writer = csv.writer(open(prediction_path, "w"), lineterminator="\n")
     valid = get_valid_df()
-    rows = [x for x in zip(valid["Id"], predictions.flatten())]
-    writer.writerow(("Id", "label"))
+    rows = [x for x in zip(valid.index + 1, predictions.flatten().astype(int))] # id starts at 1 not 0.
+    writer.writerow(("ImageId", "Label"))
     writer.writerows(rows)
     """
-    os.write(prediction_path, predictions)
+    print('saving predictions to {path}'.format(path=prediction_path))
+    np.savetxt(prediction_path, predictions, delimiter=',') 
+    print('prediction saved.')
+    """

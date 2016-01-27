@@ -1,5 +1,6 @@
 import data_io
 import pickle
+import numpy as np
 
 def main():
     print("Loading the classifier")
@@ -8,7 +9,7 @@ def main():
     print("Making predictions") 
     valid = data_io.get_valid_df()
     predictions = classifier.predict(valid)   
-    #predictions = predictions.reshape(len(predictions), 1)
+    predictions = np.rint(predictions) # Round predictions to nearest integer.
 
     print("Writing predictions to file")
     data_io.write_submission(predictions)
