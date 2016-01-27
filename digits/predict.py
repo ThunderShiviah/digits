@@ -1,6 +1,7 @@
 import data_io
 import pickle
 import numpy as np
+import cv
 
 def main():
     print("Loading the classifier")

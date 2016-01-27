@@ -1,8 +1,9 @@
 import data_io
+import cv
 from features import FeatureMapper, SimpleTransform
 import numpy as np
 import pickle
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.pipeline import Pipeline
 
@@ -16,7 +17,7 @@ def get_pipeline():
     features = feature_extractor()
     steps = [
              #("extract_features", features),
-             ("classify", RandomForestRegressor(n_estimators=3, 
+             ("classify", RandomForestClassifier(n_estimators=3, 
                                                 verbose=2,
                                                 n_jobs=1,
                                                 min_samples_split=30,
@@ -29,7 +30,16 @@ def main():
 
     print("Extracting features and training model")
     classifier = get_pipeline()
-    classifier.fit(train[[x for x in train.columns if x != 'label']], train['label'])
+    data = train[[x for x in train.columns if x != 'label']]
+    target = train['label']
+    classifier.fit(data, target )
+    #predictions = cv.get_cv_predict(classifier, data, target)
+
+    expected, predicted = target, classifier.predict(data)
+    
+    cv.get_score_report(classifier, expected, predicted)
+    cv.get_confusion_matrix(expected, predicted)
+    
 
     print("Saving the classifier")
     data_io.save_model(classifier)
