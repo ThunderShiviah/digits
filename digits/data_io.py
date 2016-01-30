@@ -1,3 +1,6 @@
+""";x
+
+"""
 import csv
 import json
 import os
@@ -14,20 +17,13 @@ def get_paths():
 def identity(x):
     return x
 
-# For pandas >= 10.1 this will trigger the columns to be parsed as strings
-converters = { "FullDescription" : identity
-             , "Title": identity
-             , "LocationRaw": identity
-             , "LocationNormalized": identity
-             }
-
 def get_train_df():
     train_path = get_paths()["train_data_path"]
-    return pd.read_csv(train_path, converters=converters)
+    return pd.read_csv(train_path)
 
 def get_valid_df():
     valid_path = get_paths()["valid_data_path"]
-    return pd.read_csv(valid_path, converters=converters)
+    return pd.read_csv(valid_path)
 
 def save_model(model):
     out_path = get_paths()["model_path"]

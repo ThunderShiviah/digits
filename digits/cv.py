@@ -13,7 +13,6 @@ def get_cv_predict(clf, data, target):
     return cv.cross_val_predict(clf, data)
 
 def get_cv_score():
-
     classifier = data_io.load_model()
     train = data_io.get_train_df()
     scores = cv.cross_val_score(classifier, train[[x for x in train.columns if x != 'label']], train['label'])
