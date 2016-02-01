@@ -2,12 +2,18 @@
 This script provides a data API between outside data sources (as specified
 in SETTINGS.json) and the main scripts.
 
+To standardize data return values and allow for easy unpacking, all get_[data] methods return tuples.
+
 TODO: Refactor get_train and get_test into common base class."""
 
 import os
+import glob
 import json
+import pickle
 from sklearn import utils
 import pandas as pd
+
+from time import gmtime, strftime
 
 def get_settings():
     """Returns SETTINGS.json as dict."""
@@ -79,33 +85,55 @@ def get_test(as_df=True): # TODO: implement a parsed setting.
 
     return get_data("test_data_path", as_df=as_df, parsed=False)
 
-def save_model(model):
+def save_model(model): # TODO: Should couple with generation of log file using unique key (date?).
     """Serializes model to disk. 
 
     Currently saves model as a pickle.
+
+    Versions model using unix timestamp and model name.
 
     -----------------------------------
     args: scikit compatible model
     returns: None # Should this return something?
     """
+    out_path = get_paths()["model_path"]
+    date = strftime("%d-%m-%Y-H-%M-%S")
+    out_path += date
+    pickle.dump(model, open(out_path + ".pickle", "wb"))
 
-    pass
 
-def load_model():
-    """Returns model from location specified by SETTINGS.json.
-
+def load_model(filename=None):
+    """Returns model from location specified by filename.
+  
+    If no filename is specified, return most recent model in 'model_path' (as specified by SETTINGS.json).
     ---------------------------------
-    args:None
+    args:
+    filename:Str
     returns: scikit compatible model"""
-    pass
+
+    if not filename:
+        model_path = get_settings()["model_path"]
+        files = glob.glob(model_path + '*.pickle')
+        files.sort(key=os.path.getmtime) # Sort files by date modified from oldest to youngest.
+        model_path = str(files[-1]) # Set model path to last modified .pickle file path.
+
+    else:
+        model_path = filename 
+    print("Now loading {model_path}".format(model_path=model_path))
+    return pickle.load(open(model_path, "rb"))
+    
 
 def write_submission(predictions, as_df=True): # Do I really need the as_df param?
     """Writes submission to location specified by SETTINGS.json.
+
+    Versions the predictions using unix timestamp.
 
     ----------------------------------
     args: predictions
     params: as_df - if True, processes predictions as pandas dataframe."""
 
-    pass
+
+
+
 
 
