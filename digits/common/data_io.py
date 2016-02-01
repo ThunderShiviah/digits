@@ -16,7 +16,7 @@ def get_settings():
         paths[key] = os.path.expandvars(paths[key])
     return paths
 
-def get_train(as_df=True, parsed=True):
+def get_data(data_path, as_df=True, parsed=True):
     """Returns training data as tuple.
 
     --------------------------------
@@ -31,12 +31,13 @@ def get_train(as_df=True, parsed=True):
 
     returns: (X_train [, y_train])"""
 
-    path = get_settings()["train_data_path"]
+    path = get_settings()[data_path]
     
 
     data = pd.read_csv(path)
 
-    if parsed:
+    if parsed and data_path=="train_data_path":
+        """Try to get the import path of the data parsing script from the 'parse_import_path' key value in SETTINGS.json. Use the associated data parsing function to parse the data into an X_train and y_train data set. Use sklearn.utils.check_X_y to validate the X_train and y_train for use in sklearn models."""
         import importlib
         try:
             parse_import_path = get_settings()["parse_import_path"]
@@ -65,17 +66,18 @@ def get_train(as_df=True, parsed=True):
 
 
         
+def get_train(as_df=True, parsed=True):
+    """Returns training data as specified by 'train_data_path'
+    
+    Wrapper around get_data function."""
+    return get_data("train_data_path", as_df=as_df, parsed=parsed)
 
+def get_test(as_df=True): # TODO: implement a parsed setting.
+    """Returns test data as specified by 'test_data_path'
+    
+    Wrapper around get_data function."""
 
-def get_test(as_df=True, parsed=True, headers=False):
-    """Returns test data as a tuple (singlet).
-
-    --------------------------------
-    args:None
-    returns: (X_test,)"""
-
-    pass
-
+    return get_data("test_data_path", as_df=as_df, parsed=False)
 
 def save_model(model):
     """Serializes model to disk. 

@@ -42,5 +42,14 @@ def test_get_train_can_return_numpy_array_unparsed():
 def test_get_test_returns_something():
     assert data_io.get_test()
 
+def test_get_test_can_return_pandas_df():
+    y_test, = data_io.get_test(as_df=True)
+    assert isinstance(y_test, df.DataFrame)
+
+
+def test_get_test_can_return_numpy_array():
+    y_test, = data_io.get_test(as_df=False)
+    assert isinstance(y_test, type(np.array(1)))
+
 def test_load_model_returns_something():
     assert data_io.load_model()
