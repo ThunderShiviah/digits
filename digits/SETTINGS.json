@@ -1,6 +1,6 @@
 {
     "train_data_path": "../../digits_data/inputs/train.csv",
-    "valid_data_path": "../../digits_data/inputs/test.csv",
+    "test_data_path": "../../digits_data/inputs/test.csv",
     "model_path": "../../digits_data/models/random_forest.pickle",
     "prediction_path": "../../digits_data/submissions/random_forest_benchmark.csv",
     "parse_import_path": "parse.parse_data"
