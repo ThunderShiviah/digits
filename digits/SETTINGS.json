@@ -1,7 +1,7 @@
 {
     "train_data_path": "../../digits_data/inputs/train.csv",
     "test_data_path": "../../digits_data/inputs/test.csv",
-    "model_path": "../../digits_data/models/random_forest.pickle",
-    "prediction_path": "../../digits_data/submissions/random_forest_benchmark.csv",
+    "model_path": "../../digits_data/models/",
+    "prediction_path": "../../digits_data/submissions/",
     "parse_import_path": "parse.parse_data"
 }
