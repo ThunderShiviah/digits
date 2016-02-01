@@ -37,7 +37,7 @@ def test_get_train_can_return_numpy_array():
 
 def test_get_train_can_return_numpy_array_unparsed():
     X, = data_io.get_train(as_df=False, parsed=False)
-    assert isinstance(data, type(np.array(1)))
+    assert isinstance(X, type(np.array(1)))
 
 def test_get_test_returns_something():
     assert data_io.get_test()
