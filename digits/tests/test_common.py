@@ -1,5 +1,6 @@
 import pytest
 import numpy as np
+import sklearn
 from sklearn import utils
 import pandas as df
 from common import data_io
@@ -53,3 +54,6 @@ def test_get_test_can_return_numpy_array():
 
 def test_load_model_returns_something():
     assert data_io.load_model()
+
+def test_load_model_returns_pipeline():
+    assert isinstance(data_io.load_model(), sklearn.pipeline.Pipeline)
