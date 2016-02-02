@@ -2,9 +2,7 @@
 This script provides a data API between outside data sources (as specified
 in SETTINGS.json) and the main scripts.
 
-To standardize data return values and allow for easy unpacking, all get_[data] methods return tuples.
-
-TODO: Refactor get_train and get_test into common base class."""
+To standardize data return values and allow for easy unpacking, all get_[data] methods return tuples."""
 
 import os
 import glob
@@ -23,7 +21,7 @@ def get_settings():
     return paths
 
 def get_data(data_path, as_df=True, parsed=True):
-    """Returns training data as tuple.
+    """Returns data as tuple.
 
     --------------------------------
     args 
@@ -48,7 +46,6 @@ def get_data(data_path, as_df=True, parsed=True):
         try:
             parse_import_path = get_settings()["parse_import_path"]
         except KeyError as err:
-             print("{bad_key} key missing from SETTINGS.json.".format(bad_key=err))
              raise KeyError("{bad_key} key missing from SETTINGS.json.".format(bad_key=err))
         module_name, func_name = parse_import_path.rsplit('.', 1) 
         try:
@@ -90,7 +87,7 @@ def save_model(model): # TODO: Should couple with generation of log file using u
 
     Currently saves model as a pickle.
 
-    Versions model using unix timestamp and model name.
+    Versions model using timestamp and model name.
 
     -----------------------------------
     args: scikit compatible model
@@ -126,7 +123,6 @@ def load_model(filename=None):
 def write_submission(predictions, as_df=True): # Do I really need the as_df param?
     """Writes submission to location specified by SETTINGS.json.
 
-    Versions the predictions using unix timestamp.
 
     ----------------------------------
     args: predictions

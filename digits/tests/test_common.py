@@ -20,7 +20,6 @@ def test_get_train_returns_consistent_lengths():
         assert utils.check_X_y(X, y)
     except Exception as e:
         assert False,e
-        pass
 
 def test_get_train_can_return_pandas_df():
     X, y = data_io.get_train(as_df=True)
