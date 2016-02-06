@@ -3,5 +3,6 @@
     "test_data_path": "../../digits_data/inputs/test.csv",
     "model_path": "../../digits_data/models/",
     "prediction_path": "../../digits_data/submissions/",
-    "parse_import_path": "parse.parse_data"
+    "parse_import_path": "parse.parse_data",
+    "log_path": "../../digits_data/logs/"
 }
