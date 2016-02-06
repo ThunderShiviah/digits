@@ -7,11 +7,11 @@ To standardize data return values and allow for easy unpacking, all get_[data] m
 import os
 import glob
 import json
-import pickle
+from sklearn.externals import joblib
 from sklearn import utils
 import pandas as pd
 
-from time import gmtime, strftime
+from time import strftime
 
 def get_settings():
     """Returns SETTINGS.json as dict."""
@@ -85,7 +85,7 @@ def get_test(as_df=True): # TODO: implement a parsed setting.
 def save_model(model): # TODO: Should couple with generation of log file using unique key (date?).
     """Serializes model to disk. 
 
-    Currently saves model as a pickle.
+    Currently saves model as a joblib file.
 
     Versions model using timestamp and model name.
 
@@ -93,10 +93,10 @@ def save_model(model): # TODO: Should couple with generation of log file using u
     args: scikit compatible model
     returns: None # Should this return something?
     """
-    out_path = get_paths()["model_path"]
-    date = strftime("%d-%m-%Y-H-%M-%S")
+    out_path = get_settings()["model_path"]
+    date = strftime("%d-%m-%Y-%H-%M-%S")
     out_path += date
-    pickle.dump(model, open(out_path + ".pickle", "wb"))
+    joblib.dump(model, out_path + ".pkl")
 
 
 def load_model(filename=None):
@@ -110,14 +110,14 @@ def load_model(filename=None):
 
     if not filename:
         model_path = get_settings()["model_path"]
-        files = glob.glob(model_path + '*.pickle')
+        files = glob.glob(model_path + '*.pkl')
         files.sort(key=os.path.getmtime) # Sort files by date modified from oldest to youngest.
-        model_path = str(files[-1]) # Set model path to last modified .pickle file path.
+        model_path = str(files[-1]) # Set model path to last modified .pkl file path.
 
     else:
         model_path = filename 
     print("Now loading {model_path}".format(model_path=model_path))
-    return pickle.load(open(model_path, "rb"))
+    return joblib.load(model_path)
     
 
 def write_submission(predictions, as_df=True): # Do I really need the as_df param?
@@ -127,6 +127,8 @@ def write_submission(predictions, as_df=True): # Do I really need the as_df para
     ----------------------------------
     args: predictions
     params: as_df - if True, processes predictions as pandas dataframe."""
+
+    pass
 
 
 
