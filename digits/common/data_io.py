@@ -9,6 +9,8 @@ import glob
 import json
 from sklearn.externals import joblib
 from sklearn import utils
+from sklearn.cross_validation import train_test_split
+
 import pandas as pd
 
 from time import strftime
@@ -75,6 +77,14 @@ def get_train(as_df=True, parsed=True):
     Wrapper around get_data function."""
     return get_data("train_data_path", as_df=as_df, parsed=parsed)
 
+def get_train_test_split(as_df=True, parsed=True):
+    """Wrapper around sklearn.cross_validation.train_test_split."""
+    X, y= get_train()
+    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0) #TODO: Refactor random_state into a constant RANDOM_STATE in SETTINGS.json.
+    return X_train, X_test, y_train, y_test 
+
+
+
 def get_test(as_df=True): # TODO: implement a parsed setting.
     """Returns test data as specified by 'test_data_path'
     
@@ -97,6 +107,7 @@ def save_model(model): # TODO: Should couple with generation of log file using u
     date = strftime("%d-%m-%Y-%H-%M-%S")
     out_path += date
     joblib.dump(model, out_path + ".pkl")
+    return str(out_path)
 
 
 def load_model(filename=None):
