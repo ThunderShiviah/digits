@@ -1,6 +1,0 @@
-{
-    "train_data_path": "$data/inputs/train.csv",
-    "valid_data_path": "$data/inputs/test.csv",
-    "model_path": "$data/models/random_forest.pickle",
-    "prediction_path": "$data/submissions/random_forest_benchmark.csv"
-}
